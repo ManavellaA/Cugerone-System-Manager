@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% if data.proveedor %}
+    <title>{{ data.number }} - {{ data.proveedor.nombre }}</title>
+    {% endif %}
+
+    {% if data.cliente %}
+    <title>{{ data.number }} - {{ data.cliente.nombre }}</title>
+    {% endif %}
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 210mm;
+            height: 297mm;
+            padding: 20mm;
+            border: 1px solid #000;
+            margin: auto;
+            background-color: #fff;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: auto;
+        }
+
+        .header img {
+            width: 250px;
+        }
+
+        .header .details {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .client-info,
+        .table {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .client-info td,
+        .table td,
+        .total td {
+            padding: 6px;
+            border: 1px solid #000;
+        }
+
+        .table th {
+            background-color: #ddd;
+            padding: 4px;
+            border: 1px solid #000;
+            width: 100%;
+        }
+
+        #art {
+            width: 25%;
+        }
+
+        #cant {
+            width: 10%;
+        }
+
+        #unitario {
+            width: 15%;
+        }
+
+        #observaciones {
+            width: 50%;
+        }
+
+        .table {
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .item {
+            text-align: center;
+        }
+
+        .total {
+            display: flex;
+            justify-content: flex-end;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .total tbody td,
+        .total tbody th {
+            min-width: 20vh;
+        }
+
+        .conditions {
+            margin-top: 20px;
+            font-size: 10px;
+        }
+
+        .preserve-format {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .legenda{
+            text-decoration: underline;
+            text-align: center;
+            font-size: 12px;
+            color: red;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .update {
+            margin-top: 40px;
+            color: red;
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <img src='https://i.postimg.cc/J0bQNsHt/logos-pos-byn-color-hor.png' border='0' alt="Logo">
+            </div>
+            <div class="details">
+                <p><strong>NRO:</strong> {{ data.number }}<br>
+                    {% if data.create_date %}
+                    <strong>Fecha:</strong> {{ data.create_date }}
+                    {% else %}
+                    <strong>Fecha:</strong> {{ data.fecha }}
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        {% if data.cliente %}
+        <div class="title text-center">PRESUPUESTO</div>
+        {% endif %}
+        {% if data.proveedor %}
+        <div class="title text-center">ORDEN DE COMPRA</div>
+        {% endif %}
+        <table class="client-info">
+            {% if data.cliente %}
+            <tr>
+                <td><strong>Cliente:</strong> {{ data.cliente.nombre }}</td>
+                <td><strong>Localidad:</strong> {{ data.cliente.ciudad }}</td>
+                <td><strong>CP:</strong> {{ data.cliente.cp }}</td>
+            </tr>
+            <tr>
+                <td><strong>Cond. I.V.A:</strong> {{ data.cliente.iva }}</td>
+                <td><strong>CUIT:</strong> {{ data.cliente.cuit }}</td>
+            </tr>
+            {% endif %}
+            {% if data.proveedor %}
+            <tr>
+                <td><strong>Proveedor:</strong> {{ data.proveedor.nombre }}</td>
+                <td><strong>Localidad:</strong> {{ data.proveedor.ciudad }}</td>
+                <td><strong>CP:</strong> {{ data.proveedor.cp }}</td>
+            </tr>
+            <tr>
+                <td><strong>Dirección:</strong> {{ data.proveedor.direccion }}</td>
+                <td><strong>CUIT:</strong> {{ data.proveedor.cuit }}</td>
+            </tr>
+            <tr>
+                <td><strong>Fecha Entrega:</strong> {{ data.fecha }}</td>
+            </tr>
+            {% endif %}
+        </table>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th id="art">Artículo</th>
+                    <th id="cant">Cantidad</th>
+                    <th id="unitario">Precio Unitario</th>
+                    <th id="observaciones">Detalle</th>
+                </tr>
+            </thead>
+            <tbody class="items">
+                {% if editable %}
+                {% for item in data.articulos %}
+                <tr>
+                    <td class="item art">{{ item.articulo }}</td>
+                    <td class="item"><input type="text" class="cant" value="{{ item.cantidad }}"></td>
+                    <td class="item"><input type="text" class="unitario" value="{{ item.unitario }}"></td>
+                    <td class="preserve-format"><textarea>{{ item.observaciones }}</textarea></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                {% for item in data.articulos %}
+                <tr>
+                    <td class="item art">{{ item.articulo }}</td>
+                    <td class="item cant">{{ item.cantidad }}</td>
+                    <td class="item unitario">{{ data.moneda }} {{ item.unitario }}</td>
+                    <td class="preserve-format">{{ item.observaciones }}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+
+        <table class="table total">
+            <tr class="totals">
+                <th>Sub Total:</th>
+                <td id="subtotal"></td>
+            </tr>
+            <tr class="totals">
+                <th>IVA 21%</th>
+                <td id="iva"></td>
+            </tr>
+            <tr class="totals">
+                <th>Total:</th>
+                <td id="total"></td>
+            </tr>
+        </table>
+
+        {% if data.proveedor %}
+            <p class="preserve-format legenda">Todo remito emitido por el Proveedor tiene que contener el numero de Orden de Compra a la cual pertenece la mercaderia remitida.</p>
+        {% endif %}
+        <div class="conditions">
+            <p><strong style="text-decoration: underline;">Condiciones de Venta:</strong>
+                {% for condicion in data.condiciones.comerciales %}
+                <p class="preserve-format">{{ condicion }}</p>
+                {% endfor %}
+            </p>
+            <p><strong style="text-decoration: underline;">Observaciones:</strong>
+            {% for otros in data.condiciones.otros %}
+                <p class="preserve-format">{{ otros }}</p>
+            {% endfor %}
+            </p>
+        </div>
+        {% if data.cliente %}
+            <div class="signature">
+                <p>Presupuestado por: <br> {{ data.firma }}</p>
+            </div>
+        {% endif %}
+        {% if data.proveedor %}
+            <div class="signature">
+                <p>Generada por: <br> {{ data.firma }}</p>
+            </div>
+        {% endif %}
+
+            <div class="update" style="display: none">
+                <p>Actualizada: <br> {{ data["update"] }}</p>
+            </div>
+        
+        {% if editable %}
+
+        <div id="div_button" style="display: flex; justify-content: right;">
+            <button id="see-button"
+                style="color:rgb(0, 0, 0);background-color: rgb(2 171 24); ;border: none; padding: 5px 10px;margin: 50px 0 0 0; font-size: 2vh; cursor: pointer;box-shadow:#ddd 10px 10px 20px;">Pre-Visualizar</button>
+        </div>
+
+        <div id="div_button" style="display: flex; justify-content: right;">
+            <button id="edit-button"
+                style="color:rgb(0, 0, 0);background-color: rgb(255 0 15);; ;border: none; padding: 5px 10px;margin: 50px 0 0 0; font-size: 2vh; cursor: pointer;box-shadow:#ddd 10px 10px 20px;">Guardar</button>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let rows = document.querySelectorAll(".items tr");
+            let editable = '{{ editable }}' === 'True';
+
+            if ('{{ data.get("update", '') }}' != ''){
+                document.querySelector(".update").style.display = 'block';
+            };
+
+            function limpiarNumero(numeroStr) {
+                let ultimaComa = numeroStr.lastIndexOf(",");
+                let ultimoPunto = numeroStr.lastIndexOf(".");
+
+                let indiceDecimal = Math.max(ultimaComa, ultimoPunto);
+
+                if (indiceDecimal === -1) {
+                    return numeroStr.replace(/[,\.]/g, ""); // Si no hay decimal, elimina todo punto o coma
+                }
+
+                let parteEntera = numeroStr.slice(0, indiceDecimal).replace(/[,\.]/g, ""); // Limpia separadores
+                let parteDecimal = numeroStr.slice(indiceDecimal + 1); // Mantiene los decimales
+
+                return `${parteEntera}.${parteDecimal}`; // Usa siempre punto como separador decimal
+            }
+
+            function calcularTotales() {
+                let subtotal = 0;
+
+                rows.forEach(row => {
+                    let cantElement = row.querySelector('.cant');
+                    let unitElement = row.querySelector('.unitario');
+
+                    if (editable) {
+                        let cantidad = parseFloat(limpiarNumero(cantElement.value.replace(/[uUsSdD$ ]/g, "")));
+                        let unitario = parseFloat(limpiarNumero(unitElement.value.replace(/[uUsSdD$ ]/g, "")));
+                        subtotal += cantidad * unitario;
+                    }
+                    else if (!editable) {
+                        let cantidad = parseFloat(limpiarNumero(cantElement.textContent.replace(/[uUsSdD$ ]/g, "")));
+                        let unitario = parseFloat(limpiarNumero(unitElement.textContent.replace(/[uUsSdD$ ]/g, "")));
+                        subtotal += cantidad * unitario;
+                    }
+                });
+
+                
+                let iva = subtotal * 0.21;
+                let totalFinal = subtotal + iva;
+                document.getElementById("subtotal").textContent = `{{ data.moneda }} ${subtotal.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById("iva").textContent = `{{ data.moneda }} ${iva.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                document.getElementById("total").textContent = `{{ data.moneda }} ${totalFinal.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            calcularTotales();
+
+            if (editable){
+                document.getElementById("see-button").onclick = function () { calcularTotales(); }
+
+                document.getElementById("edit-button").onclick = function () {
+                    calcularTotales()
+                    let dataToSave = [];
+                    let input = "{{ data.number }}"
+                    let ref = ""
+                    if (/^5/.test(input)) {
+                        ref = "Supplier"
+                    }else{
+                        ref = "Client"
+                    }
+                    rows.forEach(row => {
+                        let articulo = row.querySelector(".art").textContent;
+                        let cantidad = row.querySelector(".cant").value;
+                        let unitario = row.querySelector(".unitario").value;
+                        let observaciones = row.querySelector("textarea").value;
+
+                        dataToSave.push({ articulo, cantidad, unitario, observaciones });
+                    });                   
+
+                    fetch('/update/{{ data.number }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ items: dataToSave, number: '{{ data.number }}' })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+
+                            window.open(`/view/{{ data.number }}`, '_blank');
+                            window.location.href = `/seguimiento/` + ref;
+
+                        } else {
+                            alert('Error al guardar los datos' , e );
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

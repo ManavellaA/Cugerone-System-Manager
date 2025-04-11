@@ -1,0 +1,100 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src='https://i.postimg.cc/J0bQNsHt/logos-pos-byn-color-hor.png' border='0' class="img-logo"
+                alt='logo' />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Administración
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="/adm/payments">Registro de Pagos</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Compras
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item" href="/list/Supplier">Ordenes de Compras -></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/OC/crear">Crear OC</a></li>
+                                <li><a class="dropdown-item" href="/list/Supplier">Historial</a></li>
+                                <li><a class="dropdown-item" href="/seguimiento/Supplier">Seguimiento</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="dropdown-item" href="/subir">Subir lista de Precios</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Presupuestos
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item" href="/list/Client">Presupuestos -></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/presupuesto">Nuevo</a></li>
+                                <li><a class="dropdown-item" href="/list/Client">Historial</a></li>
+                                <li><a class="dropdown-item" href="/seguimiento/Client">Seguimiento</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/graficos/año">Grafica Presupuestos</a>
+                            <a class="dropdown-item" href="/grafico-clientes/0">Grafica % Ventas/Año</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Sector Corte
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="/chapa">Stock Chapa CUGERONE</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/chapa/danes">Stock Chapa DANES</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/pantografos">Pantografos</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/materiales">Precios</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/cortes">Cortes</a>
+                </li>
+                
+                <li class="nav-item"><button class="nav-link" onclick="downloadFile('PATRON CORTO')">
+                    Patron Corto</button>
+                </li>
+            </ul>
+        </div>
+        <div class="d-none">
+        {% include './blocks/dolares.html' %}
+        </div>
+    </div>
+</nav>

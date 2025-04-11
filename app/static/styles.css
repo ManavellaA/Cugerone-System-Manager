@@ -1,0 +1,42 @@
+.img-logo {
+    max-height: 4vh;
+}
+
+.text-bg-success, .text-bg-secondary {
+    border-radius: 5px;
+}
+
+.toast {
+    position: absolute;
+    top: 30px;
+    background-color: #ffdddd!important;
+    border: 1px solid #ff8282!important;
+}
+
+.sticky-dls{
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 15vh;
+}
+
+.filter-container {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    z-index: 10;
+}
+
+.filter-container.show {
+    display: block;
+}
+
+.filter-header {
+    position: relative;
+    cursor: pointer;
+}
+
+.filter-header:hover .filter-container {
+    display: block;
+}

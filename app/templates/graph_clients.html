@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% include './blocks/head.html' %}
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="flex-nowrap">
+            {% include './blocks/navbar.html' %}
+            <div class="col-8 py-5 mx-auto overflow-auto">
+                <div class="text-center">
+                    {% if graph %}
+                    <h1 class="mb-5">Porcentaje Ventas {{ year }}</h1>
+                    <img src="data:image/png;base64, {{ graph }}" style="height: auto; width: 90%;" alt="Gráfico General">
+                    <div class="mx-auto mt-5" style="height: auto; width: 70%;">
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Monto (Pesos)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for key, data in list.items() %}
+                                <tr>
+                                    <td>{{ data.Cliente }}</td>
+                                    <td>$ {{ "{:,.0f}".format(data.Monto).replace(",", ".") }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <h1>Gráfico Ventas</h1>
+                    <div class="mx-auto" style="width: 25vh;">
+                        <label class="mt-5 mb-5">Seleccione un año</label>
+                        <select name="year" class="form-select form-select-sm text-center">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+                        <button type="button" class="btn btn-success mt-3" onclick="graficoAnual()">Buscar Gráfico</button>
+                    </div>
+                    {%  endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="../static/script.js"></script>
+    <script>
+        function graficoAnual() {
+            let year = document.getElementsByName("year")[0].value;
+            window.location.href = "/grafico-clientes/" + year;
+        }
+    </script>
+</body>
+
+</html>
