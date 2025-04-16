@@ -11,32 +11,26 @@ def download_file():
     matching_files = []
     file_to_download = ''
     try:
-        if "type" in request.json:
-            try:
-                if request.json["type"] == 'adm':
-                    directory = os.path.abspath(app.functions.DIRECTORY_VOUCHERS)
-                    files_in_directory = os.listdir(directory)
-                    index = app.functions.get_data_from_json(app.functions.INDEX_SUPPLIER_PATH)
-                    name = ''
-                    for item in index:
-                        if item['Numero'] == filename:
-                            name = item['Comprobante_pago']
-                    file_to_download = name
-                else:
-                    print('Entró')
-                    if request.json["type"] == 'fc':
-                        directory = os.path.abspath(app.functions.DIRECTORY_FC)
-                        files_in_directory = os.listdir(directory)
-                        index = app.functions.get_data_from_json(app.functions.INDEX_SUPPLIER_PATH)
-                        name = ''
-                        for item in index:
-                            if item['Numero'] == filename:
-                                name = item['FC']
-                        file_to_download = name
-            except KeyError as e:
-                    print('algo paso con el Comprobante', e)
-                    
+        if request.json["type"] == 'adm':
+            directory = os.path.abspath(app.functions.DIRECTORY_VOUCHERS)
+            files_in_directory = os.listdir(directory)
+            index = app.functions.get_data_from_json(app.functions.INDEX_SUPPLIER_PATH)
+            name = ''
+            for item in index:
+                if item['Numero'] == filename:
+                    name = item['Comprobante_pago']
+            file_to_download = name
 
+        elif request.json["type"] == 'fc':
+            directory = os.path.abspath(app.functions.DIRECTORY_FC)
+            files_in_directory = os.listdir(directory)
+            index = app.functions.get_data_from_json(app.functions.INDEX_SUPPLIER_PATH)
+            name = ''
+            for item in index:
+                if item['Numero'] == filename:
+                    name = item['FC']
+            file_to_download = name                
+        
         else:
             filename = request.json["filename"]
             directory = os.path.abspath(app.functions.DIRECTORY_FOLDER)
